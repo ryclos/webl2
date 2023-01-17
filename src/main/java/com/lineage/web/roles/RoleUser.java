@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "roles")
-public class Role {
+public class RoleUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,6 +12,10 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     private EnumRole userRole;
+
+    public RoleUser(EnumRole userRole) {
+        this.userRole = userRole;
+    }
 
     public Long getId() {
         return id;

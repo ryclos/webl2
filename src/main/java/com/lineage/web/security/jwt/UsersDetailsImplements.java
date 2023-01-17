@@ -2,9 +2,12 @@ package com.lineage.web.security.jwt;
 
 import com.lineage.web.users.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UsersDetailsImplements implements UserDetails {
 
@@ -28,9 +31,21 @@ public class UsersDetailsImplements implements UserDetails {
         this.grantedAuthorities = grantedAuthorities;
     }
 
-    //public static UsersDetailsImplements build(User user){
-    //    //todo les roles
-    //}
+    public static UsersDetailsImplements build(User user) {
+        //todo les roles
+        // Se rappeler que l'ordre des attriuts du constructeur influe sur l'ordre des données en base
+        List<GrantedAuthority> authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getUserRole().name()))
+                .collect(Collectors.toList());
+        return new UsersDetailsImplements(
+                user.getId(),
+                user.getUserName(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getPassword(),
+                authorities);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

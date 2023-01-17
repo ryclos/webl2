@@ -1,6 +1,6 @@
 package com.lineage.web.users;
 
-import com.lineage.web.roles.Role;
+import com.lineage.web.roles.RoleUser;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -26,8 +26,9 @@ public class User {
 
     private String password;
 
-    //@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(table = "role_id"))
-    //private Set<Role> roles = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(table = "role_id"))
+    private Set<RoleUser> roles = new HashSet<>();
 
     public User() {
     }
@@ -41,13 +42,13 @@ public class User {
         this.password = password;
     }
 
-    //public Set<Role> getRoles() {
-    //    return roles;
-    //}
-//
-    //public void setRoles(Set<Role> roles) {
-    //    this.roles = roles;
-    //}
+    public Set<RoleUser> getRoles() {
+       return roles;
+    }
+
+    public void setRoles(Set<RoleUser> roles) {
+       this.roles = roles;
+    }
 
     public Long getId() {
         return id;
